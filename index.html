@@ -1,577 +1,237 @@
+<!-- login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netflix Account Checker</title>
+    <title>Gulab Wallet - Login & Register</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            font-family: 'Netflix Sans', Arial, sans-serif;
-            background: linear-gradient(180deg, #000000 0%, #141414 100%);
-            color: #ffffff;
             min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 8px;
-            padding: 40px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            border: 1px solid #333;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: #e50914;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
-
-        .description {
-            text-align: center;
-            color: #b3b3b3;
-            margin-bottom: 30px;
-            font-size: 1.1rem;
-            line-height: 1.5;
-        }
-
-        .warning {
-            background: rgba(229, 9, 20, 0.1);
-            border-left: 4px solid #e50914;
-            padding: 15px 20px;
-            margin-bottom: 30px;
-            border-radius: 4px;
-            color: #ff6b6b;
-            font-size: 0.95rem;
-        }
-
-        .input-section {
-            margin-bottom: 30px;
-        }
-
-        textarea {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             width: 100%;
-            height: 200px;
-            background: #333;
-            border: 2px solid #444;
-            border-radius: 4px;
-            color: #fff;
-            padding: 15px;
-            font-size: 1rem;
-            font-family: 'Courier New', monospace;
-            resize: vertical;
-            transition: border-color 0.3s;
+            max-width: 450px;
+            overflow: hidden;
         }
 
-        textarea:focus {
-            outline: none;
-            border-color: #e50914;
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
         }
 
-        textarea::placeholder {
+        .tab-btn {
+            flex: 1;
+            padding: 18px;
+            border: none;
+            background: none;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
             color: #666;
         }
 
-        .input-info {
-            margin-top: 8px;
-            color: #b3b3b3;
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .tab-btn.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
         }
 
-        .format-example {
-            background: #222;
-            padding: 4px 10px;
-            border-radius: 4px;
-            color: #e50914;
-            font-family: 'Courier New', monospace;
+        .form-container {
+            padding: 40px 30px;
         }
 
-        .button-group {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 12px 30px;
-            font-size: 1rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            flex: 1;
-            min-width: 150px;
-        }
-
-        .btn-primary {
-            background: #e50914;
-            color: white;
-        }
-
-        .btn-primary:hover:not(:disabled) {
-            background: #f40612;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(229, 9, 20, 0.4);
-        }
-
-        .btn-secondary {
-            background: #333;
-            color: white;
-        }
-
-        .btn-secondary:hover:not(:disabled) {
-            background: #404040;
-            transform: translateY(-2px);
-        }
-
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .progress-container {
-            background: #222;
-            border-radius: 4px;
-            margin-bottom: 30px;
-            overflow: hidden;
-            height: 40px;
-            position: relative;
+        .form {
             display: none;
         }
 
-        .progress-bar {
-            background: linear-gradient(90deg, #e50914, #ff5e5e);
-            height: 100%;
-            width: 0%;
-            transition: width 0.3s;
+        .form.active {
+            display: block;
         }
 
-        .progress-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-weight: 600;
-            text-shadow: 1px 1px 2px black;
-            z-index: 1;
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
         }
 
-        .results {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+        .input-group {
+            margin-bottom: 20px;
         }
 
-        .result-box {
-            background: #1a1a1a;
-            border-radius: 6px;
-            padding: 20px;
-            border: 1px solid #333;
-        }
-
-        .result-box h2 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #333;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .working h2 {
-            color: #00ff00;
-        }
-
-        .not-working h2 {
-            color: #ff4444;
-        }
-
-        .account-list {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .account-item {
-            background: #252525;
+        .input-group input {
+            width: 100%;
             padding: 12px 15px;
-            margin-bottom: 8px;
-            border-radius: 4px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            border-left: 4px solid;
-            animation: slideIn 0.3s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
             transition: transform 0.2s;
         }
 
-        .account-item:hover {
-            transform: translateX(5px);
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
         }
 
-        .working .account-item {
-            border-left-color: #00ff00;
-            background: rgba(0, 255, 0, 0.1);
-        }
-
-        .not-working .account-item {
-            border-left-color: #ff4444;
-            background: rgba(255, 68, 68, 0.1);
-        }
-
-        .account-email {
-            color: #fff;
-            word-break: break-all;
-        }
-
-        .account-pass {
-            color: #b3b3b3;
-            margin-left: 10px;
-        }
-
-        .account-status {
-            font-size: 0.8rem;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-weight: 600;
-        }
-
-        .status-working {
-            background: rgba(0, 255, 0, 0.2);
-            color: #00ff00;
-        }
-
-        .status-not-working {
-            background: rgba(255, 68, 68, 0.2);
-            color: #ff4444;
-        }
-
-        .stats {
-            background: #1a1a1a;
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 30px;
-            display: flex;
-            justify-content: space-around;
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
             text-align: center;
-            border: 1px solid #333;
+            font-size: 14px;
         }
 
-        .stat-item {
-            flex: 1;
+        .error {
+            background: #fee;
+            color: #c33;
         }
 
-        .stat-label {
-            color: #b3b3b3;
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: 700;
-        }
-
-        .stat-value.total {
-            color: #e50914;
-        }
-
-        .stat-value.working {
-            color: #00ff00;
-        }
-
-        .stat-value.not-working {
-            color: #ff4444;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .footer {
-            margin-top: 40px;
-            text-align: center;
-            color: #666;
-            font-size: 0.85rem;
-        }
-
-        .footer a {
-            color: #e50914;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-            
-            .results {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .button-group {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-            }
+        .success {
+            background: #efe;
+            color: #3c3;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Netflix Account Checker</h1>
-        
-        <div class="description">
-            Check your Netflix accounts status (working/not working)
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+            <button class="tab-btn" onclick="switchTab('register')">Register</button>
         </div>
-        
-        <div class="warning">
-            ⚠️ Important: This tool is for checking your own accounts only. 
-            Unauthorized access to others' accounts is illegal. Always respect privacy and terms of service.
-        </div>
-        
-        <div class="input-section">
-            <textarea id="accountInput" 
-                placeholder="Enter accounts in format: email:password&#10;Example:&#10;user1@gmail.com:pass123&#10;user2@yahoo.com:secret456&#10;user3@outlook.com:mypass789"></textarea>
-            <div class="input-info">
-                <span>📝 One account per line (email:password)</span>
-                <span class="format-example">user@email.com:password</span>
+        <div class="form-container">
+            <div id="login-form" class="form active">
+                <h2>Welcome Back</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="input-group">
+                        <input type="text" id="login-username" placeholder="Username" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="login-password" placeholder="Password" required>
+                    </div>
+                    <button type="submit">Login</button>
+                </form>
+                <div id="login-message" class="message"></div>
             </div>
-        </div>
-        
-        <div class="button-group">
-            <button class="btn btn-primary" id="checkBtn" onclick="checkAccounts()">Check Accounts</button>
-            <button class="btn btn-secondary" id="clearBtn" onclick="clearAll()">Clear All</button>
-        </div>
-        
-        <div class="progress-container" id="progressContainer">
-            <div class="progress-bar" id="progressBar"></div>
-            <div class="progress-text" id="progressText">0%</div>
-        </div>
-        
-        <div class="results">
-            <div class="result-box working">
-                <h2>
-                    <span>✅ Working Accounts</span>
-                    <span id="workingCount">0</span>
-                </h2>
-                <div class="account-list" id="workingAccounts"></div>
+            <div id="register-form" class="form">
+                <h2>Create Account</h2>
+                <form onsubmit="handleRegister(event)">
+                    <div class="input-group">
+                        <input type="text" id="reg-username" placeholder="Username" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="reg-password" placeholder="Password" required>
+                    </div>
+                    <div class="input-group">
+                        <input type="password" id="reg-confirm" placeholder="Confirm Password" required>
+                    </div>
+                    <button type="submit">Register</button>
+                </form>
+                <div id="register-message" class="message"></div>
             </div>
-            
-            <div class="result-box not-working">
-                <h2>
-                    <span>❌ Not Working Accounts</span>
-                    <span id="notWorkingCount">0</span>
-                </h2>
-                <div class="account-list" id="notWorkingAccounts"></div>
-            </div>
-        </div>
-        
-        <div class="stats">
-            <div class="stat-item">
-                <div class="stat-label">Total Accounts</div>
-                <div class="stat-value total" id="totalCount">0</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-label">Working</div>
-                <div class="stat-value working" id="workingStat">0</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-label">Not Working</div>
-                <div class="stat-value not-working" id="notWorkingStat">0</div>
-            </div>
-        </div>
-        
-        <div class="footer">
-            <p>For educational purposes only. Always respect Netflix's terms of service.</p>
-            <p>© 2024 Netflix Account Checker | <a href="#">Privacy Policy</a> | <a href="#">Terms of Use</a></p>
         </div>
     </div>
 
     <script>
-        // Demo account data for testing
-        const demoAccounts = [
-            "john.doe@gmail.com:password123",
-            "jane.smith@yahoo.com:securepass456",
-            "bob.wilson@outlook.com:mypassword789",
-            "alice.brown@hotmail.com:pass1234",
-            "charlie.davis@gmail.com:netflix2024"
-        ];
-
-        // Simulate account checking
-        function checkAccounts() {
-            const input = document.getElementById('accountInput').value.trim();
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.form').forEach(form => form.classList.remove('active'));
             
-            let accounts;
-            if (input === '') {
-                // Use demo accounts if input is empty
-                accounts = demoAccounts;
-                document.getElementById('accountInput').value = demoAccounts.join('\n');
+            if (tab === 'login') {
+                document.querySelector('.tab-btn:first-child').classList.add('active');
+                document.getElementById('login-form').classList.add('active');
             } else {
-                accounts = input.split('\n').filter(line => line.trim() !== '');
+                document.querySelector('.tab-btn:last-child').classList.add('active');
+                document.getElementById('register-form').classList.add('active');
             }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
             
-            if (accounts.length === 0) {
-                alert('Please enter at least one account in format: email:password');
+            const users = JSON.parse(localStorage.getItem('gulab_users') || '{}');
+            
+            if (users[username] && users[username].password === password) {
+                localStorage.setItem('gulab_current_user', username);
+                window.location.href = 'index.html';
+            } else {
+                const msgDiv = document.getElementById('login-message');
+                msgDiv.textContent = 'Invalid username or password';
+                msgDiv.className = 'message error';
+            }
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const username = document.getElementById('reg-username').value;
+            const password = document.getElementById('reg-password').value;
+            const confirm = document.getElementById('reg-confirm').value;
+            
+            if (password !== confirm) {
+                const msgDiv = document.getElementById('register-message');
+                msgDiv.textContent = 'Passwords do not match';
+                msgDiv.className = 'message error';
                 return;
             }
             
-            // Validate format
-            const invalidAccounts = accounts.filter(account => !account.includes(':') || account.split(':').length !== 2);
-            if (invalidAccounts.length > 0) {
-                alert('Invalid format! Please use email:password format for all accounts.');
+            const users = JSON.parse(localStorage.getItem('gulab_users') || '{}');
+            
+            if (users[username]) {
+                const msgDiv = document.getElementById('register-message');
+                msgDiv.textContent = 'Username already exists';
+                msgDiv.className = 'message error';
                 return;
             }
             
-            // Clear previous results
-            document.getElementById('workingAccounts').innerHTML = '';
-            document.getElementById('notWorkingAccounts').innerHTML = '';
+            users[username] = {
+                password: password,
+                balance: 0,
+                transactions: []
+            };
             
-            // Show progress bar
-            const progressContainer = document.getElementById('progressContainer');
-            const progressBar = document.getElementById('progressBar');
-            const progressText = document.getElementById('progressText');
-            const checkBtn = document.getElementById('checkBtn');
+            localStorage.setItem('gulab_users', JSON.stringify(users));
             
-            progressContainer.style.display = 'block';
-            checkBtn.disabled = true;
+            const msgDiv = document.getElementById('register-message');
+            msgDiv.textContent = 'Registration successful! Please login.';
+            msgDiv.className = 'message success';
             
-            let working = [];
-            let notWorking = [];
-            let current = 0;
-            
-            // Simulate checking process
-            const interval = setInterval(() => {
-                if (current < accounts.length) {
-                    const account = accounts[current];
-                    const [email, password] = account.split(':');
-                    
-                    // Simulate random check result (in real scenario, this would be actual verification)
-                    const isWorking = Math.random() > 0.3; // 70% chance of working for demo
-                    
-                    if (isWorking) {
-                        working.push({email, password});
-                        addAccountToList('workingAccounts', email, password, true);
-                    } else {
-                        notWorking.push({email, password});
-                        addAccountToList('notWorkingAccounts', email, password, false);
-                    }
-                    
-                    // Update progress
-                    current++;
-                    const progress = Math.round((current / accounts.length) * 100);
-                    progressBar.style.width = progress + '%';
-                    progressText.textContent = progress + '%';
-                    
-                    // Update counts
-                    updateCounts(working.length, notWorking.length, accounts.length);
-                } else {
-                    clearInterval(interval);
-                    progressContainer.style.display = 'none';
-                    checkBtn.disabled = false;
-                    
-                    // Show completion message
-                    if (working.length > 0 || notWorking.length > 0) {
-                        alert(`Check complete!\nWorking: ${working.length}\nNot Working: ${notWorking.length}`);
-                    }
-                }
-            }, 300); // 300ms delay between checks for demo
+            setTimeout(() => switchTab('login'), 1500);
         }
-        
-        function addAccountToList(listId, email, password, isWorking) {
-            const list = document.getElementById(listId);
-            const accountDiv = document.createElement('div');
-            accountDiv.className = 'account-item';
-            
-            const accountInfo = document.createElement('span');
-            accountInfo.className = 'account-email';
-            accountInfo.innerHTML = `${email}<span class="account-pass">:${password}</span>`;
-            
-            const statusBadge = document.createElement('span');
-            statusBadge.className = `account-status ${isWorking ? 'status-working' : 'status-not-working'}`;
-            statusBadge.textContent = isWorking ? 'Working' : 'Not Working';
-            
-            accountDiv.appendChild(accountInfo);
-            accountDiv.appendChild(statusBadge);
-            
-            list.appendChild(accountDiv);
-            
-            // Auto-scroll to bottom
-            list.scrollTop = list.scrollHeight;
-        }
-        
-        function updateCounts(working, notWorking, total) {
-            document.getElementById('workingCount').textContent = working;
-            document.getElementById('notWorkingCount').textContent = notWorking;
-            document.getElementById('totalCount').textContent = total;
-            document.getElementById('workingStat').textContent = working;
-            document.getElementById('notWorkingStat').textContent = notWorking;
-        }
-        
-        function clearAll() {
-            document.getElementById('accountInput').value = '';
-            document.getElementById('workingAccounts').innerHTML = '';
-            document.getElementById('notWorkingAccounts').innerHTML = '';
-            document.getElementById('workingCount').textContent = '0';
-            document.getElementById('notWorkingCount').textContent = '0';
-            document.getElementById('totalCount').textContent = '0';
-            document.getElementById('workingStat').textContent = '0';
-            document.getElementById('notWorkingStat').textContent = '0';
-            document.getElementById('progressContainer').style.display = 'none';
-        }
-        
-        // Add keyboard shortcut for checking (Ctrl+Enter)
-        document.getElementById('accountInput').addEventListener('keydown', function(e) {
-            if (e.ctrlKey && e.key === 'Enter') {
-                e.preventDefault();
-                checkAccounts();
-            }
-        });
-        
-        // Load demo accounts on page load (optional)
-        window.onload = function() {
-            // Uncomment the line below to auto-load demo accounts
-            // document.getElementById('accountInput').value = demoAccounts.join('\n');
-        };
     </script>
 </body>
 </html>
