@@ -1,10 +1,9 @@
-<!-- admin.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gulab Wallet - Admin Panel</title>
+    <title>Gulab Admin | Create Codes</title>
     <style>
         * {
             margin: 0;
@@ -12,332 +11,234 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
         body {
-            background: #f5f7fa;
-            min-height: 100vh;
-        }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .back-btn {
-            background: rgba(255,255,255,0.2);
-            border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
-            color: white;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-
-        .admin-card {
-            background: white;
-            border-radius: 20px;
+            background: #1e2a36;
             padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
-
-        .admin-card h2 {
-            margin-bottom: 20px;
-            color: #333;
+        .admin-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 32px;
+            padding: 30px;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.2);
         }
-
+        h1 {
+            color: #1e3c2c;
+            border-left: 8px solid #f4b942;
+            padding-left: 20px;
+            margin-bottom: 24px;
+        }
         .form-group {
             margin-bottom: 20px;
         }
-
-        .form-group label {
+        label {
+            font-weight: bold;
             display: block;
             margin-bottom: 8px;
-            font-weight: 600;
-            color: #555;
         }
-
-        .form-group input {
+        input {
             width: 100%;
             padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            border-radius: 60px;
+            border: 1px solid #ccc;
             font-size: 16px;
         }
-
         button {
-            padding: 12px 30px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: #f4b942;
             border: none;
-            border-radius: 10px;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-weight: bold;
             cursor: pointer;
-            font-weight: 600;
             font-size: 16px;
+            margin-right: 12px;
         }
-
-        .message {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
+        .code-list {
+            margin-top: 32px;
+            border-top: 2px dashed #ddd;
+            padding-top: 24px;
         }
-
-        .success {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .codes-list {
-            margin-top: 20px;
-        }
-
         .code-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 10px;
+            background: #f9f9f9;
+            border-radius: 20px;
+            padding: 12px 20px;
+            margin: 12px 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
         }
-
-        .code-info {
-            font-family: monospace;
-            font-size: 16px;
-        }
-
-        .code-status {
+        .badge {
+            background: #2c5e3f;
+            color: white;
             padding: 4px 12px;
-            border-radius: 20px;
+            border-radius: 40px;
             font-size: 12px;
-            font-weight: 600;
         }
-
-        .status-used {
-            background: #dc3545;
-            color: white;
+        .used {
+            background: #aaa;
         }
-
-        .status-active {
-            background: #28a745;
-            color: white;
+        .status {
+            font-size: 13px;
         }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+        .warning {
+            color: #c0392b;
         }
-
-        .stat-card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
+        .admin-only {
+            background: #fef5e7;
+            padding: 12px;
+            border-radius: 24px;
+            margin-bottom: 20px;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .stat-number {
-            font-size: 32px;
-            font-weight: bold;
-            color: #667eea;
-        }
-
-        .stat-label {
-            color: #666;
-            margin-top: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">👑 Admin Panel - Gulab Wallet</div>
-        <a href="index.html" class="back-btn">← Back to Wallet</a>
-    </div>
+<div class="admin-container">
+    <h1>🛡️ Gulab Wallet - Admin</h1>
+    <div class="admin-only" id="adminAuthMsg">🔐 Verifying admin rights...</div>
 
-    <div class="container">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number" id="total-users">0</div>
-                <div class="stat-label">Total Users</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="total-balance">$0</div>
-                <div class="stat-label">Total Balance</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="total-codes">0</div>
-                <div class="stat-label">Redeem Codes</div>
-            </div>
+    <div id="adminContent" style="display: none;">
+        <div class="form-group">
+            <label>💰 Dollar Value of Redeem Code</label>
+            <input type="number" id="codeValue" placeholder="e.g., 10, 25, 50" step="0.01">
         </div>
-
-        <div class="admin-card">
-            <h2>🎁 Create Redeem Code</h2>
-            <div class="form-group">
-                <label>Code (Leave empty for auto-generate)</label>
-                <input type="text" id="code-value" placeholder="Optional: Enter custom code">
-            </div>
-            <div class="form-group">
-                <label>Amount ($)</label>
-                <input type="number" id="code-amount" placeholder="Enter dollar amount" required>
-            </div>
-            <button onclick="createRedeemCode()">Generate Redeem Code</button>
-            <div id="create-message" class="message"></div>
+        <div class="form-group">
+            <label>🎫 Custom Code (optional, leave blank for random)</label>
+            <input type="text" id="customCode" placeholder="Leave empty for auto-generate">
         </div>
+        <button id="createCodeBtn">✨ Generate Redeem Code</button>
+        <button id="refreshListBtn">🔄 Refresh Codes</button>
 
-        <div class="admin-card">
-            <h2>📋 All Redeem Codes</h2>
-            <div id="codes-list" class="codes-list">
-                <div>Loading codes...</div>
-            </div>
-        </div>
-
-        <div class="admin-card">
-            <h2>👥 User Management</h2>
-            <div id="users-list">
-                <div>Loading users...</div>
-            </div>
+        <div class="code-list">
+            <h3>📋 Existing Redeem Codes</h3>
+            <div id="codesContainer">Loading...</div>
         </div>
     </div>
+</div>
 
-    <script>
-        function generateRandomCode() {
-            return 'GULAB-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-        }
+<script>
+    // admin check: only if logged user has isAdmin flag
+    function getUsers() {
+        return JSON.parse(localStorage.getItem("gulab_users") || "[]");
+    }
 
-        function createRedeemCode() {
-            let code = document.getElementById('code-value').value.trim();
-            const amount = parseFloat(document.getElementById('code-amount').value);
-            const msgDiv = document.getElementById('create-message');
-            
-            if (isNaN(amount) || amount <= 0) {
-                msgDiv.textContent = 'Please enter a valid amount';
-                msgDiv.className = 'message error';
-                return;
-            }
-            
-            if (!code) {
-                code = generateRandomCode();
-            }
-            
-            const redeemCodes = JSON.parse(localStorage.getItem('gulab_redeem_codes') || '{}');
-            
-            if (redeemCodes[code]) {
-                msgDiv.textContent = 'This code already exists. Please use a different code.';
-                msgDiv.className = 'message error';
-                return;
-            }
-            
-            redeemCodes[code] = {
-                amount: amount,
-                created: new Date().toISOString(),
-                used: false,
-                usedBy: null
-            };
-            
-            localStorage.setItem('gulab_redeem_codes', JSON.stringify(redeemCodes));
-            
-            msgDiv.innerHTML = `✅ Code created successfully!<br><strong>Code: ${code}</strong><br>Amount: $${amount}`;
-            msgDiv.className = 'message success';
-            
-            document.getElementById('code-value').value = '';
-            document.getElementById('code-amount').value = '';
-            
-            loadRedeemCodes();
-            loadStats();
-            
-            setTimeout(() => {
-                msgDiv.innerHTML = '';
-                msgDiv.className = 'message';
-            }, 5000);
+    function saveUsers(users) {
+        localStorage.setItem("gulab_users", JSON.stringify(users));
+    }
+
+    function getRedeemCodes() {
+        return JSON.parse(localStorage.getItem("gulab_redeem_codes") || "[]");
+    }
+
+    function saveRedeemCodes(codes) {
+        localStorage.setItem("gulab_redeem_codes", JSON.stringify(codes));
+    }
+
+    function generateRandomCode() {
+        return "GULAB" + Math.random().toString(36).substring(2, 8).toUpperCase();
+    }
+
+    function renderCodeList() {
+        const codes = getRedeemCodes();
+        const container = document.getElementById("codesContainer");
+        if (codes.length === 0) {
+            container.innerHTML = "<p>No redeem codes created yet.</p>";
+            return;
         }
-        
-        function loadRedeemCodes() {
-            const redeemCodes = JSON.parse(localStorage.getItem('gulab_redeem_codes') || '{}');
-            const container = document.getElementById('codes-list');
-            
-            if (Object.keys(redeemCodes).length === 0) {
-                container.innerHTML = '<div>No redeem codes created yet</div>';
-                return;
-            }
-            
-            container.innerHTML = Object.entries(redeemCodes).map(([code, data]) => `
-                <div class="code-item">
-                    <div>
-                        <div class="code-info"><strong>${code}</strong> - $${data.amount}</div>
-                        <div style="font-size: 12px; color: #666;">Created: ${new Date(data.created).toLocaleDateString()}</div>
-                        ${data.used ? `<div style="font-size: 12px; color: #666;">Used by: ${data.usedBy}</div>` : ''}
-                    </div>
-                    <div>
-                        <span class="code-status ${data.used ? 'status-used' : 'status-active'}">
-                            ${data.used ? 'Used' : 'Active'}
-                        </span>
-                    </div>
-                </div>
-            `).join('');
+        container.innerHTML = "";
+        codes.forEach((codeObj, idx) => {
+            const div = document.createElement("div");
+            div.className = "code-item";
+            const usedStatus = codeObj.used ? "❌ USED" : "✅ ACTIVE";
+            const statusClass = codeObj.used ? "used" : "";
+            div.innerHTML = `
+                <div><strong>${codeObj.code}</strong> <span class="badge ${statusClass}">${usedStatus}</span></div>
+                <div>💵 Value: $${codeObj.value.toFixed(2)}</div>
+                <div class="status">${codeObj.used ? `Redeemed at: ${codeObj.redeemedAt || '—'}` : 'Available'}</div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    // create redeem code
+    function createRedeemCode(dollarValue, customCode = null) {
+        if (isNaN(dollarValue) || dollarValue <= 0) {
+            alert("Please enter a valid dollar amount > 0");
+            return false;
         }
-        
-        function loadUsers() {
-            const users = JSON.parse(localStorage.getItem('gulab_users') || '{}');
-            const container = document.getElementById('users-list');
-            
-            if (Object.keys(users).length === 0) {
-                container.innerHTML = '<div>No users registered yet</div>';
-                return;
-            }
-            
-            container.innerHTML = Object.entries(users).map(([username, data]) => `
-                <div class="code-item">
-                    <div>
-                        <div class="code-info"><strong>${username}</strong></div>
-                        <div style="font-size: 12px; color: #666;">Balance: $${data.balance || 0}</div>
-                        <div style="font-size: 12px; color: #666;">Transactions: ${data.transactions?.length || 0}</div>
-                    </div>
-                </div>
-            `).join('');
+        let code = customCode && customCode.trim() !== "" ? customCode.trim().toUpperCase() : generateRandomCode();
+        const existingCodes = getRedeemCodes();
+        if (existingCodes.find(c => c.code === code)) {
+            alert("Code already exists! Try different or leave blank for random.");
+            return false;
         }
-        
-        function loadStats() {
-            const users = JSON.parse(localStorage.getItem('gulab_users') || '{}');
-            const redeemCodes = JSON.parse(localStorage.getItem('gulab_redeem_codes') || '{}');
-            
-            const totalUsers = Object.keys(users).length;
-            let totalBalance = 0;
-            Object.values(users).forEach(user => {
-                totalBalance += user.balance || 0;
-            });
-            const totalCodes = Object.keys(redeemCodes).length;
-            
-            document.getElementById('total-users').textContent = totalUsers;
-            document.getElementById('total-balance').textContent = `$${totalBalance}`;
-            document.getElementById('total-codes').textContent = totalCodes;
+        const newCode = {
+            code: code,
+            value: parseFloat(dollarValue),
+            used: false,
+            createdAt: new Date().toISOString(),
+            redeemedAt: null
+        };
+        existingCodes.push(newCode);
+        saveRedeemCodes(existingCodes);
+        renderCodeList();
+        return true;
+    }
+
+    // admin authentication
+    function checkAdmin() {
+        const stored = sessionStorage.getItem("gulab_logged_user");
+        if (!stored) {
+            document.getElementById("adminAuthMsg").innerHTML = "❌ You are not logged in. <a href='index.html'>Login first</a>";
+            return false;
         }
-        
-        loadRedeemCodes();
-        loadUsers();
-        loadStats();
-    </script>
+        const userData = JSON.parse(stored);
+        const users = getUsers();
+        const fullUser = users.find(u => u.username === userData.username);
+        if (!fullUser || fullUser.isAdmin !== true) {
+            document.getElementById("adminAuthMsg").innerHTML = "⛔ Access denied. Admin privileges required. <a href='hp.html'>Back to Dashboard</a>";
+            return false;
+        }
+        // promote if needed: set flag in session? but we keep.
+        document.getElementById("adminAuthMsg").innerHTML = "✅ Welcome, Admin. You can create redeem codes.";
+        document.getElementById("adminContent").style.display = "block";
+        renderCodeList();
+        return true;
+    }
+
+    // make first admin if none exists (optional: if no admin, first user can become admin but we allow via manual trigger)
+    function ensureAtLeastOneAdmin() {
+        let users = getUsers();
+        const anyAdmin = users.some(u => u.isAdmin === true);
+        if (!anyAdmin && users.length > 0) {
+            // set first user as admin for convenience (optional)
+            users[0].isAdmin = true;
+            saveUsers(users);
+            console.log("First user promoted to admin.");
+        } else if (users.length === 0) {
+            // if no users, we can't auto promote but you can register first and then admin will be set later.
+        }
+    }
+
+    // event handlers
+    document.getElementById("createCodeBtn").onclick = () => {
+        const value = parseFloat(document.getElementById("codeValue").value);
+        const custom = document.getElementById("customCode").value;
+        if (createRedeemCode(value, custom)) {
+            alert("Redeem code created!");
+            document.getElementById("codeValue").value = "";
+            document.getElementById("customCode").value = "";
+        }
+    };
+
+    document.getElementById("refreshListBtn").onclick = () => {
+        renderCodeList();
+    };
+
+    ensureAtLeastOneAdmin();
+    checkAdmin();
+</script>
 </body>
 </html>
